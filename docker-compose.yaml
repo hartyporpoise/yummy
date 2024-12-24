@@ -1,0 +1,23 @@
+services:
+  app:
+    build: ./app
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./app:/app
+    links:
+      - db
+  db:
+    image: mongo:latest
+    hostname: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=yummy
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
